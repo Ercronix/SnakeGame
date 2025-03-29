@@ -30,6 +30,8 @@ public class UiController implements Initializable {
     private GameBoard gameBoard;
     private VBox pauseMenu;
 
+    private VBox gameOverMenu;
+
     private final Image appleImage = new Image(Objects.requireNonNull(getClass().getResourceAsStream("Apple.png")));
 
     public void setGameBoard(GameBoard gameBoard) {
@@ -80,6 +82,12 @@ public class UiController implements Initializable {
             Label pausedLabel = new Label("Game Paused");
             pausedLabel.setStyle("-fx-text-fill: white; -fx-font-size: 24;");
 
+            Button toggleWallButton = new Button("Toggle Wall");
+            toggleWallButton.getStyleClass().add("button-3"); // Apply the CSS style here
+            toggleWallButton.setOnAction(e -> {
+                gameBoard.toggleWall();
+            });
+
             Button resumeButton = new Button("Resume");
             resumeButton.getStyleClass().add("button-3"); // Apply the CSS style here
             resumeButton.setOnAction(e -> {
@@ -94,6 +102,34 @@ public class UiController implements Initializable {
             });
 
             Button restartButton = new Button("Restart");
+            restartButton.getStyleClass().add("button-3");// Apply the CSS style here
+            restartButton.setOnAction(e -> {
+                try {
+                    gameBoard.restart();
+                } catch (InterruptedException ex) {
+                    throw new RuntimeException(ex);
+                }
+            });
+
+            pauseMenu.getChildren().addAll(pausedLabel,resumeButton, toggleWallButton, restartButton, exitButton);
+        }
+
+        if (!rootPane.getChildren().contains(pauseMenu)) {
+            rootPane.getChildren().add(pauseMenu);
+        }
+    }
+
+    public void showGameOverMenu() {
+        if (gameOverMenu == null) {
+            gameOverMenu = new VBox(20);
+            gameOverMenu.setAlignment(Pos.CENTER);
+            gameOverMenu.setStyle("-fx-background-color: rgba(0, 0, 0, 0.6); -fx-padding: 40; -fx-background-radius: 10;");
+            gameOverMenu.setMaxSize(300, 300);
+
+            Label gameOverLabel = new Label("Game Over");
+            gameOverLabel.setStyle("-fx-text-fill: white; -fx-font-size: 24;");
+
+            Button restartButton = new Button("Restart");
             restartButton.getStyleClass().add("button-3"); // Apply the CSS style here
             restartButton.setOnAction(e -> {
                 try {
@@ -103,17 +139,27 @@ public class UiController implements Initializable {
                 }
             });
 
-            pauseMenu.getChildren().addAll(pausedLabel, resumeButton, exitButton, restartButton);
+            Button exitButton = new Button("Exit");
+            exitButton.getStyleClass().add("button-3"); // Apply the CSS style here
+            exitButton.setOnAction(e -> {
+                System.exit(0);
+            });
+
+            gameOverMenu.getChildren().addAll(gameOverLabel,restartButton, exitButton);
         }
 
-        if (!rootPane.getChildren().contains(pauseMenu)) {
-            rootPane.getChildren().add(pauseMenu);
+        if (!rootPane.getChildren().contains(gameOverMenu)) {
+            rootPane.getChildren().add(gameOverMenu);
         }
     }
 
 
     public void hidePauseMenu() {
         rootPane.getChildren().remove(pauseMenu);
+    }
+
+    public void hideGameOverMenu() {
+        rootPane.getChildren().remove(gameOverMenu);
     }
 
     @Override

@@ -2,7 +2,6 @@
 
 <?import javafx.geometry.Insets?>
 <?import javafx.scene.control.Label?>
-<?import javafx.scene.control.ToggleButton?>
 <?import javafx.scene.layout.AnchorPane?>
 <?import javafx.scene.layout.GridPane?>
 <?import javafx.scene.layout.HBox?>
@@ -14,24 +13,13 @@
         <Insets bottom="20.0" left="20.0" right="20.0" top="20.0" />
     </padding>
    <VBox alignment="TOP_CENTER" prefHeight="464.0" prefWidth="471.0">
-      <children>
-         <HBox prefHeight="42.0" prefWidth="460.0">
-            <children>
-               <AnchorPane prefHeight="100.0" prefWidth="250.0">
-                  <children>
-                     <ToggleButton fx:id="toggleWallButton" alignment="TOP_LEFT" layoutX="14.0" layoutY="6.0" mnemonicParsing="false" onMouseClicked="#toggleWall" styleClass="button-3" stylesheets="@Styles.css" text="Toggle Wall" />
-                  </children>
-               </AnchorPane>
-               <AnchorPane prefHeight="200.0" prefWidth="200.0">
-                  <Label fx:id="Score" layoutX="114.0" layoutY="13.0" styleClass="label-3" text="Score" textFill="WHITE" />
-               </AnchorPane>
-            </children>
-         </HBox>
-         <AnchorPane prefHeight="422.0" prefWidth="460.0">
-            <children>
-               <GridPane fx:id="gameGrid" alignment="CENTER" gridLinesVisible="true" layoutX="21.0" layoutY="14.0" prefHeight="420.0" prefWidth="420.0" stylesheets="@Styles.css" />
-            </children>
+      <HBox prefHeight="42.0" prefWidth="460.0">
+         <AnchorPane prefHeight="30.0" prefWidth="464.0">
+            <Label fx:id="Score" layoutX="20.0" layoutY="6.0" styleClass="label-3" text="Score" textFill="WHITE" />
          </AnchorPane>
-      </children>
+      </HBox>
+      <AnchorPane prefHeight="422.0" prefWidth="460.0">
+         <GridPane fx:id="gameGrid" alignment="CENTER" gridLinesVisible="true" layoutX="21.0" layoutY="14.0" prefHeight="420.0" prefWidth="420.0" stylesheets="@Styles.css" />
+      </AnchorPane>
    </VBox>
 </StackPane>

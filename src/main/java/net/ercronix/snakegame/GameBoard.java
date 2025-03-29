@@ -59,6 +59,16 @@ public class GameBoard {
                 board[row][col] = Field.GRASS;
             }
         }
+        if(wallActive){
+            for (int row = 0; row < boardSize; row++) {
+                board[row][0] = Field.WALL;
+                board[row][boardSize - 1] = Field.WALL;
+            }
+            for (int col = 0; col < boardSize; col++) {
+                board[0][col] = Field.WALL;
+                board[boardSize - 1][col] = Field.WALL;
+            }
+        }
     }
 
     public void restart() throws InterruptedException {
@@ -71,6 +81,7 @@ public class GameBoard {
         createApple();
         uiController.drawBoard(board, boardSize);
         uiController.hidePauseMenu();
+        uiController.hideGameOverMenu();
         uiController.setScore(1);
         gameLoop.play();
         gameState = GameState.PLAYING;
@@ -116,6 +127,7 @@ public class GameBoard {
         if (board[newHead.y][newHead.x].equals(Field.SNAKE) || board[newHead.y][newHead.x].equals(Field.WALL)) {
             System.out.println("Game over");
             stop();
+            uiController.showGameOverMenu();
             //remove return if snake should die in wall or in itself
             return;
         }
