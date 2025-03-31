@@ -8,7 +8,13 @@ public class InputHandler {
 
     private Direction currentDirection = Direction.EAST; // Default direction
     public boolean allowDirectionChange = true;
+    Direction lastDirection;
+
     GameBoard gameBoard;
+
+    public void setLastDirection(Direction lastDirection) {
+        this.lastDirection = lastDirection;
+    }
 
     public InputHandler(GameBoard gameBoard) {
         this.gameBoard = gameBoard;
@@ -19,6 +25,8 @@ public class InputHandler {
     }
 
     private void handleKeyPressed(KeyEvent event) {
+        if (!allowDirectionChange) return;
+
         if (event.getCode() == KeyCode.ESCAPE) {
             if (gameBoard.gameState == GameState.PAUSE) {
                 gameBoard.resume();
@@ -26,33 +34,32 @@ public class InputHandler {
                 gameBoard.pause();
             }
         }
-        if (!allowDirectionChange) return;
 
         KeyCode code = event.getCode();
 
         switch (code) {
             case W, UP:
-                if (currentDirection != Direction.SOUTH) {
+                if (currentDirection != Direction.SOUTH && lastDirection != Direction.SOUTH) {
+                    if(lastDirection == Direction.NORTH) break;
                     currentDirection = Direction.NORTH;
-                    allowDirectionChange = false;
                 }
                 break;
             case S, DOWN:
-                if (currentDirection != Direction.NORTH) {
+                if (currentDirection != Direction.NORTH && lastDirection != Direction.NORTH) {
+                    if(lastDirection == Direction.SOUTH) break;
                     currentDirection = Direction.SOUTH;
-                    allowDirectionChange = false;
                 }
                 break;
             case A, LEFT:
-                if (currentDirection != Direction.EAST) {
+                if (currentDirection != Direction.EAST && lastDirection != Direction.EAST) {
+                    if (lastDirection == Direction.WEST) break;
                     currentDirection = Direction.WEST;
-                    allowDirectionChange = false;
                 }
                 break;
             case D, RIGHT:
-                if (currentDirection != Direction.WEST) {
+                if (currentDirection != Direction.WEST && lastDirection != Direction.WEST) {
+                    if (lastDirection == Direction.EAST) break;
                     currentDirection = Direction.EAST;
-                    allowDirectionChange = false;
                 }
                 break;
             default:
@@ -62,9 +69,5 @@ public class InputHandler {
 
     public Direction getDirection() {
         return currentDirection;
-    }
-
-    public void resetDirectionChange() {
-        allowDirectionChange = true;
     }
 }

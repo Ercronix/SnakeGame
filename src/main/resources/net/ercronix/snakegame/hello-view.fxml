@@ -19,7 +19,7 @@
          </AnchorPane>
       </HBox>
       <AnchorPane prefHeight="422.0" prefWidth="460.0">
-         <GridPane fx:id="gameGrid" alignment="CENTER" gridLinesVisible="true" layoutX="21.0" layoutY="14.0" prefHeight="420.0" prefWidth="420.0" stylesheets="@Styles.css" />
+         <GridPane fx:id="gameGrid" alignment="CENTER" gridLinesVisible="true" layoutX="20.0" layoutY="20.0" prefHeight="420.0" prefWidth="420.0" stylesheets="@Styles.css" />
       </AnchorPane>
    </VBox>
 </StackPane>

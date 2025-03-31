@@ -18,6 +18,7 @@ public class GameBoard {
     private boolean wallActive = false;
     private final LinkedList<Point> snake;
     public GameState gameState;
+    private Direction direction;
 
     public GameBoard(Scene scene, UiController uiController) {
         this.uiController = uiController;
@@ -44,6 +45,7 @@ public class GameBoard {
 
     public void pause() {
         gameLoop.pause();
+        inputHandler.allowDirectionChange = false;
         gameState = GameState.PAUSE;
         uiController.showPauseMenu();
     }
@@ -51,6 +53,7 @@ public class GameBoard {
         gameLoop.play();
         gameState = GameState.PLAYING;
         uiController.hidePauseMenu();
+        inputHandler.allowDirectionChange = true;
     }
 
     private void setupBoard() {
@@ -83,6 +86,7 @@ public class GameBoard {
         uiController.hidePauseMenu();
         uiController.hideGameOverMenu();
         uiController.setScore(1);
+        inputHandler.allowDirectionChange = true;
         gameLoop.play();
         gameState = GameState.PLAYING;
     }
@@ -105,18 +109,21 @@ public class GameBoard {
         switch (inputHandler.getDirection()) {
             case NORTH:
                 y = Math.floorMod(y - 1, boardSize);
+                direction = Direction.NORTH;
                 break;
             case SOUTH:
                 y = Math.floorMod(y + 1, boardSize);
+                direction = Direction.SOUTH;
                 break;
             case EAST:
                 x = Math.floorMod(x + 1, boardSize);
+                direction = Direction.EAST;
                 break;
             case WEST:
                 x = Math.floorMod(x - 1, boardSize);
+                direction = Direction.WEST;
                 break;
         }
-
         return new Point(x, y);
     }
 
@@ -124,6 +131,7 @@ public class GameBoard {
         Point LastSnakePoint = snake.getFirst();
         Point head = snake.getLast();
         Point newHead = nextHeadPosition(head);
+        inputHandler.setLastDirection(direction);
         if (board[newHead.y][newHead.x].equals(Field.SNAKE) || board[newHead.y][newHead.x].equals(Field.WALL)) {
             System.out.println("Game over");
             stop();
@@ -140,7 +148,8 @@ public class GameBoard {
         snake.add(newHead);
         updateBoard(LastSnakePoint);
         uiController.drawBoard(board, boardSize);
-        inputHandler.resetDirectionChange();
+        //inputHandler.resetDirectionChange();
+
     }
 
     private void updateBoard(Point lastSnakePos) {
